@@ -497,7 +497,7 @@ function forcedTest(action){if(!testMode){toast('Erst das Entwickler-Testlabor a
  else if(action==='free'){state.freeBet=BETS[state.betIndex];beginFree();}
  else if(action==='bombs'){let g=grid();g[0][0]='MINE';g[2][2]='MINE';g[3][4]='MINE';state.stacks=[];state.freeExtra=0;renderGrid(g);message('3 BONUS-MINEN! Die Freispiele wurden ausgelöst.','important');sfx('bonus');state.freeBet=BETS[state.betIndex];setTimeout(()=>{if(testMode&&!isSpinning())beginFree()},650);}
  else if(action==='new'){addForcedStack();}
- else if(action==='gold'){if(!covers(state.stacks).length)addForcedStack();state.forceNextReveal='GOLD';message('TEST: Beim nächsten Spin öffnet sich ein goldener Mini-Reveal!','important');toast('Gold-Reveal für den nächsten Spin vorbereitet');}
+ else if(action==='gold'){if(!covers(state.stacks).length)addForcedStack();state.forceNextReveal='GOLD';message('TEST: Goldener Reveal mit unabhängigen Münz-Mini-Walzen!','important');spin();}
  else if(action==='multi'){if(state.mode!=='free'){state.mode='free';state.stacks=[{col:1,top:0,id:'test-free-2'},{col:3,top:0,id:'test-free-4'}];state.freeBet=BETS[state.betIndex];state.freeRound=0}state.freeMult=25;renderStackCovers(state.stacks);updateHud();message('TEST: Nächster Freispielgewinn wird mit ×25 berechnet.','positive');}
  else if(action==='simulate'){runSimulation();}
 }
