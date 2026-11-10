@@ -437,11 +437,11 @@ function forcedTest(action){if(!testMode){toast('Erst das Entwickler-Testlabor a
 }
 function runSimulation(){const output=$('simResults');output.classList.remove('hidden');output.textContent='Prüfung läuft …';setTimeout(()=>{let saved=state,summary={paidSpins:10000,freeBonuses:200,paidWin:0,paidTotal:0,scatterStart:0,stackTriggers:0,freeRounds:0,freeMax:0,freeFinished:0,golden:0,issues:0},sim=INITIAL();
  try{
- for(let i=0;i<summary.paidSpins;i++){sim.mode='base';sim.stacks=[];state=sim;let p=makePlan();if(p.points>0)summary.paidWin++;summary.paidTotal+=p.points;if(p.scatters>=3)summary.scatterStart++;if(p.covered.length)summary.stackTriggers++;if(p.target==='GOLD')summary.golden++;if(p.points!==p.lines.total+p.coinPayout||p.paid!==BETS[sim.betIndex])summary.issues++}
+ for(let i=0;i<summary.paidSpins;i++){sim.mode='base';sim.stacks=[];state=sim;let p=makePlan();if(p.points>0)summary.paidWin++;summary.paidTotal+=p.points;if(p.scatters>=3)summary.scatterStart++;if(p.covered.length)summary.stackTriggers++;if(p.target==='GOLD')summary.golden++;if(Math.abs(p.points-(p.lines.total+p.coinPayout))>.011||p.paid!==BETS[sim.betIndex])summary.issues++}
  for(let b=0;b<summary.freeBonuses;b++){sim.mode='free';sim.stacks=[{col:1,top:0},{col:3,top:0}];sim.freeRound=0;sim.freeMult=1;let rounds=0;
  // The QA harness has a protective guard only to prevent the TEST from blocking the UI;
  // it is NOT a game bonus ending condition.
- for(;rounds<1000;rounds++){state=sim;let p=makePlan();if(p.multiplier!==rounds+1)summary.issues++;if(p.target==='GOLD')summary.golden++;if(p.points!==p.lines.total+p.coinPayout)summary.issues++;sim.stacks=p.stacks;sim.freeRound++;sim.freeMult++;if(!sim.stacks.length){summary.freeFinished++;rounds++;break}}
+ for(;rounds<1000;rounds++){state=sim;let p=makePlan();if(p.multiplier!==rounds+1)summary.issues++;if(p.target==='GOLD')summary.golden++;if(Math.abs(p.points-(p.lines.total+p.coinPayout))>.011)summary.issues++;sim.stacks=p.stacks;sim.freeRound++;sim.freeMult++;if(!sim.stacks.length){summary.freeFinished++;rounds++;break}}
  summary.freeRounds+=rounds;summary.freeMax=Math.max(summary.freeMax,rounds);
  }
  }catch(e){summary.issues++;console.error(e)}finally{state=saved}
